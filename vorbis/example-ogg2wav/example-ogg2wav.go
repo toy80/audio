@@ -52,8 +52,9 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		pprof.StartCPUProfile(f)
-		defer pprof.StopCPUProfile()
+		if pprof.StartCPUProfile(f) == nil {
+			defer pprof.StopCPUProfile()
+		}
 	}
 
 	for i := 0; i < flag.NArg(); i++ {

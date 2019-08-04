@@ -183,7 +183,6 @@ func (vb *Vorbis) outputPCMUint8(pcmCount int) {
 			k++
 		}
 	}
-	return
 }
 
 // standard PCM signed int16
@@ -198,7 +197,6 @@ func (vb *Vorbis) outputPCMInt16(pcmCount int) {
 			k += 2
 		}
 	}
-	return
 }
 
 // standard PCM float32
@@ -215,7 +213,6 @@ func (vb *Vorbis) outputPCMFloat(pcmCount int) {
 			k += 4
 		}
 	}
-	return
 }
 
 func (vb *Vorbis) output(buf []byte) (n int, err error) {

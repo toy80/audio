@@ -105,9 +105,9 @@ func u32(b []byte) uint32 {
 	return uint32(b[0]) | uint32(b[1])<<8 | uint32(b[2])<<16 | uint32(b[3])<<24
 }
 
-func u16(b []byte) uint16 {
-	return uint16(b[0]) | uint16(b[1])<<8
-}
+// func u16(b []byte) uint16 {
+// 	return uint16(b[0]) | uint16(b[1])<<8
+// }
 
 func (o *Reader) pageFlagCon() bool { return o.flags&0x01 == 0x01 }
 

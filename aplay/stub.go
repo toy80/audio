@@ -2,7 +2,11 @@
 
 package aplay
 
-import "github.com/toy80/go-al/wav"
+import (
+	"fmt"
+
+	"github.com/toy80/go-al/wav"
+)
 
 var theMutedPlayer mutedPlayer
 
@@ -63,7 +67,12 @@ func (mutedPlayer) IsRelative() bool { return false }
 
 func (mutedPlayer) SetRelative(b bool) {}
 
-func (mutedPlayer) Play(x wav.Reader, gain float32, loop int) error { return nil }
+func (mutedPlayer) Play(x wav.Reader, gain float32, loop int) error {
+	if debug {
+		fmt.Println("play audio on a muted player will not output any sounds")
+	}
+	return nil
+}
 
 func (mutedPlayer) Terminate() {}
 

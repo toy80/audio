@@ -41,8 +41,7 @@ func (cb *sCodeBook) constructHuffman() bool {
 	if cb.codeLens == nil {
 		return false
 	}
-	var err error
-	err = cb.huffmanDecoder.constructHufman(cb.codeLens)
+	err := cb.huffmanDecoder.constructHufman(cb.codeLens)
 	if err != nil {
 		return false
 	}

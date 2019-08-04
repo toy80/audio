@@ -390,9 +390,9 @@ func (fl *sFloor) decode(vb *Vorbis, _buf *sChannelBuf, halfBlockSize int) bool 
 	}
 	if hx < halfBlockSize {
 		renderLine(hx, hy, halfBlockSize, hy, floorBuf[:])
-	} else if hx > halfBlockSize {
-		// truncate
-	}
+	} // else if hx > halfBlockSize {
+	// 	// truncate
+	// }
 	for i := 0; i < halfBlockSize; i++ {
 		assert(floorBuf[i] >= 0 && floorBuf[i] < 256)
 		_buf.floor[i] = floor1InverseDB[floorBuf[i]]
