@@ -1,12 +1,19 @@
 language: go
+
 go:
  - 1.12
+
+env:
+ - GO111MODULE=on
+
 before_install:
  - sudo apt-get install -y libopenal-dev
+
 before_script:
  - "curl -H 'Cache-Control: no-cache' https://raw.githubusercontent.com/fossas/fossa-cli/master/install.sh | sudo bash"
+
 script:
- - env GO111MODULE=on go build -tags noaudio ./...
- - env GO111MODULE=on go test -tags noaudio ./...
+ - go build -tags noaudio ./...
+ - go test -tags noaudio ./...
  - fossa init --include-all
  - fossa analyze
