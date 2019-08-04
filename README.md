@@ -1,6 +1,4 @@
 # go-al
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al?ref=badge_shield)
-
 
 [![Build Status](https://travis-ci.org/toy80/go-al.svg?branch=master)](https://travis-ci.org/toy80/go-al)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al?ref=badge_shield)
