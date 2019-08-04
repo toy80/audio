@@ -8,5 +8,5 @@ before_script:
 script:
  - env GO111MODULE=on go build -tags noaudio ./...
  - env GO111MODULE=on go test -tags noaudio ./...
- - fossa init
+ - fossa init --include-all
  - fossa analyze
