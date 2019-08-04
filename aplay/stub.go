@@ -2,6 +2,8 @@
 
 package aplay
 
+import "github.com/toy80/go-al/wav"
+
 var theMutedPlayer mutedPlayer
 
 // IsAvailable reports whether audio available
@@ -45,8 +47,32 @@ func MasterGain() float32 {
 	return 0
 }
 
+func WaitIdle() {}
+
 type mutedPlayer int
 
+func (mutedPlayer) SetPosition([3]float32) {}
+
+func (mutedPlayer) SetVelocity([3]float32) {}
+
+func (mutedPlayer) SetDirection([3]float32) {}
+
+func (mutedPlayer) SetOverlayGain(float32) {}
+
+func (mutedPlayer) IsRelative() bool { return false }
+
+func (mutedPlayer) SetRelative(b bool) {}
+
+func (mutedPlayer) Play(x wav.Reader, gain float32, loop int) error { return nil }
+
+func (mutedPlayer) Terminate() {}
+
+func (mutedPlayer) SetFadeOut(msec uint) {}
+
+func (mutedPlayer) IsPlaying() bool { return false }
+
+func (mutedPlayer) Release() {}
+
 func Alloc() Player {
-	return &theMutedPlayer
+	return theMutedPlayer
 }
