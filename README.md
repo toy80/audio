@@ -1,5 +1,7 @@
 # go-al
 
+[![Build Status](https://travis-ci.org/toy80/go-al.svg?branch=master)](https://travis-ci.org/toy80/go-al)
+
 An experimental golang audio library, provide an Ogg-Vorbis decoder and an OpenAL-based playback interface.
 It was designed for a 3D game engine.
 

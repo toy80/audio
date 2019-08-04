@@ -1,7 +1,5 @@
 language: go
 go:
  - 1.12
-before_install:
- - sudo apt-get install -y libopenal-dev
 script:
- - go test ./...
+ - go test -tags noaudio ./...
