@@ -1,4 +1,6 @@
 # go-al
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al?ref=badge_shield)
+
 
 An experimental golang audio library, provide an Ogg-Vorbis decoder and an OpenAL-based playback interface.
 It was designed for a 3D game engine.
@@ -110,3 +112,6 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 For more information, please refer to <http://unlicense.org>
 ```
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al?ref=badge_large)
