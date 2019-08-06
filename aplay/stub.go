@@ -5,7 +5,7 @@ package aplay
 import (
 	"fmt"
 
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/wav"
 )
 
 var theMutedPlayer mutedPlayer

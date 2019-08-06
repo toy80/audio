@@ -10,8 +10,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/toy80/go-al/ogg"
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/ogg"
+	"github.com/toy80/audio/wav"
 )
 
 const (

@@ -1,4 +1,4 @@
-module github.com/toy80/go-al
+module github.com/toy80/audio
 
 go 1.12
 

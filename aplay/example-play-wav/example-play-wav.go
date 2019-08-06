@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/toy80/go-al/aplay"
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/aplay"
+	"github.com/toy80/audio/wav"
 )
 
 func main() {

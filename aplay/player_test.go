@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/toy80/go-al/vorbis"
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/vorbis"
+	"github.com/toy80/audio/wav"
 )
 
 func TestEmptyWav(t *testing.T) {

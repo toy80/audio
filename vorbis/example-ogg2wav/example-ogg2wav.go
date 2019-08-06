@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"runtime/pprof"
 
-	"github.com/toy80/go-al/vorbis"
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/vorbis"
+	"github.com/toy80/audio/wav"
 )
 
 var cpuprofile = flag.String("p", "", "write cpu profile to file")

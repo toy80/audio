@@ -1,8 +1,8 @@
 # go-al
 
-[![Build Status](https://travis-ci.org/toy80/go-al.svg?branch=master)](https://travis-ci.org/toy80/go-al)
+[![Build Status](https://travis-ci.org/toy80/audio.svg?branch=master)](https://travis-ci.org/toy80/audio)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ftoy80%2Fgo-al?ref=badge_shield)
-[![GolangCI](https://golangci.com/badges/github.com/toy80/go-al.svg)](https://golangci.com)
+[![GolangCI](https://golangci.com/badges/github.com/toy80/audio.svg)](https://golangci.com)
 
 
 An experimental golang audio library, provide an Ogg-Vorbis decoder and an OpenAL-based playback interface.
@@ -11,22 +11,22 @@ It was designed for a 3D game engine.
 ## Installation
 
 ```bash
-$ go get github.com/toy80/go-al/...
+$ go get github.com/toy80/audio/...
 ```
 
 ## Usage
 
 ### Ogg+Vorbis Decoding
 
-set [github.com/toy80/go-al/vorbis/example-ogg2wav](https://github.com/toy80/go-al/blob/master/vorbis/example-ogg2wav/example-ogg2wav.go)
+set [github.com/toy80/audio/vorbis/example-ogg2wav](https://github.com/toy80/audio/blob/master/vorbis/example-ogg2wav/example-ogg2wav.go)
 
 ```golang
 package main
 
 import (
   // ...
-  "github.com/toy80/go-al/vorbis"
-  "github.com/toy80/go-al/wav"
+  "github.com/toy80/audio/vorbis"
+  "github.com/toy80/audio/wav"
 )
 
 // ...
@@ -53,15 +53,15 @@ func convert(name string) {
 
 ### Audio Playback
 
-see [github.com/toy80/go-al/aplay/example-play-wav](https://github.com/toy80/go-al/blob/master/aplay/example-play-wav/example-play-wav.go)
+see [github.com/toy80/audio/aplay/example-play-wav](https://github.com/toy80/audio/blob/master/aplay/example-play-wav/example-play-wav.go)
 
 ```golang
 package main
 
 import (
   // ...
-  "github.com/toy80/go-al/aplay"
-  "github.com/toy80/go-al/wav"
+  "github.com/toy80/audio/aplay"
+  "github.com/toy80/audio/wav"
 )
 
 func main() {

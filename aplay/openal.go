@@ -24,7 +24,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/wav"
 )
 
 const (

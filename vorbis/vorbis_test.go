@@ -6,8 +6,8 @@ import (
 	"log"
 	"testing"
 
-	"github.com/toy80/go-al/ogg"
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/ogg"
+	"github.com/toy80/audio/wav"
 )
 
 func TestOgg(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 	"io"
 	"math"
 
-	"github.com/toy80/go-al/wav"
+	"github.com/toy80/audio/wav"
 )
 
 type sChannelBuf struct {
