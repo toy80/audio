@@ -1,7 +1,7 @@
 # audio
 
 [![Build Status](https://travis-ci.org/toy80/audio.svg?branch=master)](https://travis-ci.org/toy80/audio)
-[![GolangCI](https://golangci.com/badges/github.com/toy80/audio.svg)](https://golangci.com)
+[![GolangCI](https://golangci.com/badges/github.com/toy80/audio.svg)](https://golangci.com/r/github.com/toy80/audio)
 [![FOSSA Status](https://app.fossa.io/api/projects/custom%2B12312%2Fgithub.com%2Ftoy80%2Faudio.svg?type=shield)](https://app.fossa.io/projects/custom%2B12312%2Fgithub.com%2Ftoy80%2Faudio?ref=badge_shield)
 
 
