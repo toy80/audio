@@ -3,6 +3,8 @@ package vorbis
 import (
 	"fmt"
 	"math"
+
+	"github.com/toy80/utils/debug"
 )
 
 type sCodeBook struct {
@@ -32,12 +34,10 @@ func float32Unpack(_x uint32) float32 {
 }
 
 func (cb *sCodeBook) constructHuffman() bool {
-	if debug {
-		fmt.Println(" book[" + fmt.Sprint(cb.id) + "]:" +
-			" dim=" + fmt.Sprint(cb.codeDims) +
-			",\tcount=" + fmt.Sprint(len(cb.codeLens)) +
-			",\tVQ=" + fmt.Sprint(cb.lookupType))
-	}
+	debug.Println(" book[" + fmt.Sprint(cb.id) + "]:" +
+		" dim=" + fmt.Sprint(cb.codeDims) +
+		",\tcount=" + fmt.Sprint(len(cb.codeLens)) +
+		",\tVQ=" + fmt.Sprint(cb.lookupType))
 	if cb.codeLens == nil {
 		return false
 	}
@@ -137,7 +137,7 @@ func (cb *sCodeBook) readConfig(vb *Vorbis) bool {
 		if cb.lookupType == 1 {
 			cb.numLookVals = lookup1Values(numCodes, cb.codeDims)
 		} else {
-			assert(cb.lookupType == 2)
+			debug.Assert(cb.lookupType == 2)
 			cb.numLookVals = numCodes * cb.codeDims
 		}
 		cb.muls = make([]uint8, cb.numLookVals) //(uint8*) malloc(sizeof(uint8) * cb.numLookVals);
@@ -165,7 +165,7 @@ func (cb *sCodeBook) decodeVector(r *Vorbis, _vector []float32) bool {
 	//fmt.Println("decodeVector:", _vector)
 	//}()
 	//fmt.Printf("decodeVector: cb.lookupType=%d\n", cb.lookupType)
-	assert(cb.lookupType == 1 || cb.lookupType == 2)
+	debug.Assert(cb.lookupType == 1 || cb.lookupType == 2)
 	lookOff := cb.decode(r)
 	sz := uint32(len(_vector))
 	if cb.codeDims < sz {

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sort"
 	"unsafe"
+
+	"github.com/toy80/utils/debug"
 )
 
 var floor1InverseDB = [256]float32{
@@ -102,9 +104,7 @@ func (p f1asSlice) Less(i, j int) bool { return p[i].x < p[j].x }
 func (p f1asSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 func (fl *sFloor) readConfig(vb *Vorbis) bool {
-	if debug {
-		fmt.Println("  read floor config.")
-	}
+	debug.Println("  read floor config.")
 	fl.typ = vb.pr.ReadBits(16)
 	if fl.typ != 1 {
 		fmt.Println(fmt.Sprintf("unsupported floor type: %d", fl.typ))
@@ -130,7 +130,7 @@ func (fl *sFloor) readConfig(vb *Vorbis) bool {
 			}
 		}
 		jj := 0x00000001 << fl.classSubs[i]
-		assert(jj < 8)
+		debug.Assert(jj < 8)
 		for j := 0; j < jj; j++ {
 			fl.subBooks[i][j] = int(vb.pr.ReadBits(8)) - 1
 			if fl.subBooks[i][j] >= int(vb.numCodebooks) {
@@ -151,7 +151,7 @@ func (fl *sFloor) readConfig(vb *Vorbis) bool {
 		for j := uint8(0); j < fl.classDims[numCurClass]; j++ {
 			if fl.values >= int(fl.sizeXList) {
 				fl.sizeXList += fl.partitions
-				assert(fl.values < (int)(unsafe.Sizeof(fl.xList)))
+				debug.Assert(fl.values < (int)(unsafe.Sizeof(fl.xList)))
 			}
 			fl.xList[fl.values] = int(vb.pr.ReadBits(uint32(fl.rangebits)))
 			fl.values++
@@ -161,7 +161,7 @@ func (fl *sFloor) readConfig(vb *Vorbis) bool {
 }
 
 func lowNeighbor(_v []int, _x int) int {
-	assert(_x > 0)
+	debug.Assert(_x > 0)
 	ret := -1
 	m := 0
 	limit := _v[_x]
@@ -175,7 +175,7 @@ func lowNeighbor(_v []int, _x int) int {
 }
 
 func highNeighbor(_v []int, _x int) int {
-	assert(_x > 0)
+	debug.Assert(_x > 0)
 	ret := -1
 	m := 100000
 	limit := _v[_x]
@@ -251,7 +251,7 @@ func renderLine(_x0 int, _y0 int, _x1 int, _y1 int, _v []int) {
 
 func (fl *sFloor) decode(vb *Vorbis, _buf *sChannelBuf, halfBlockSize int) bool {
 	// 7.2.2 floor1 packet decode
-	assert(fl.typ == 1)
+	debug.Assert(fl.typ == 1)
 	_buf.floorUnused = vb.pr.ReadBits(1) == 0
 	if _buf.floorUnused {
 		f := _buf.floor[:halfBlockSize]
@@ -316,7 +316,7 @@ func (fl *sFloor) decode(vb *Vorbis, _buf *sChannelBuf, halfBlockSize int) bool 
 	for i := 2; i < fl.values; i++ {
 		lowOff := lowNeighbor(fl.xList[:], i)
 		highOff := highNeighbor(fl.xList[:], i)
-		assert(lowOff != i && highOff != i && highOff != lowOff)
+		debug.Assert(lowOff != i && highOff != i && highOff != lowOff)
 		predicted := renderPoint(
 			f1as[lowOff].x, f1as[lowOff].y,
 			f1as[highOff].x, f1as[highOff].y,
@@ -394,7 +394,7 @@ func (fl *sFloor) decode(vb *Vorbis, _buf *sChannelBuf, halfBlockSize int) bool 
 	// 	// truncate
 	// }
 	for i := 0; i < halfBlockSize; i++ {
-		assert(floorBuf[i] >= 0 && floorBuf[i] < 256)
+		debug.Assert(floorBuf[i] >= 0 && floorBuf[i] < 256)
 		_buf.floor[i] = floor1InverseDB[floorBuf[i]]
 	}
 	return true

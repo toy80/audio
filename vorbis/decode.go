@@ -6,6 +6,7 @@ import (
 	"math"
 
 	"github.com/toy80/audio/wav"
+	"github.com/toy80/utils/debug"
 )
 
 type sChannelBuf struct {
@@ -30,9 +31,7 @@ type sMapping struct {
 
 func (mp *sMapping) readConfig(vb *Vorbis) bool {
 	typ := vb.pr.ReadBits(16)
-	if debug {
-		fmt.Println("  read mapping config, type=" + fmt.Sprint(typ))
-	}
+	debug.Println("  read mapping config, type=" + fmt.Sprint(typ))
 	if typ != 0 {
 		fmt.Println("unsupported mapping type")
 		return false
@@ -113,12 +112,10 @@ func (m *sMode) readConfig(vb *Vorbis) bool {
 	m.windowtype = uint16(vb.pr.ReadBits(16))
 	m.transformtype = uint16(vb.pr.ReadBits(16))
 	m.mapping = uint8(vb.pr.ReadBits(8))
-	if debug {
-		fmt.Println("  read mode config, blockflag=" + fmt.Sprint(m.blockflag) +
-			", windowtype=" + fmt.Sprint(m.windowtype) +
-			", transformtype=" + fmt.Sprint(m.transformtype) +
-			", mapping=" + fmt.Sprint(m.mapping))
-	}
+	debug.Println("  read mode config, blockflag=" + fmt.Sprint(m.blockflag) +
+		", windowtype=" + fmt.Sprint(m.windowtype) +
+		", transformtype=" + fmt.Sprint(m.transformtype) +
+		", mapping=" + fmt.Sprint(m.mapping))
 	if m.windowtype != 0 ||
 		m.transformtype != 0 ||
 		uint32(m.mapping) >= vb.numMappings {
@@ -259,9 +256,7 @@ func (vb *Vorbis) output(buf []byte) (n int, err error) {
 			vb.pr.ReadBits(1)
 		}
 
-		if debug {
-			fmt.Printf("    decode audio block=%d,  size=%d\n", vb.idxAutoPacket, blockSize)
-		}
+		debug.Printf("    decode audio block=%d,  size=%d\n", vb.idxAutoPacket, blockSize)
 
 		// 4.3.2 floor curve decode
 		mapping := &vb.mappings[mode.mapping]

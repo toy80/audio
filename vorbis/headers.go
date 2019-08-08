@@ -3,6 +3,8 @@ package vorbis
 import (
 	"fmt"
 	"strings"
+
+	"github.com/toy80/utils/debug"
 )
 
 func isVorbis(v []byte) bool {
@@ -10,9 +12,7 @@ func isVorbis(v []byte) bool {
 }
 
 func (vb *Vorbis) parseIdentHeader() bool {
-	if debug {
-		fmt.Println(" # packet: 0")
-	}
+	debug.Println(" # packet: 0")
 
 	var buf [7]uint8
 	vb.pr.ReadBytes(buf[:])
@@ -45,8 +45,8 @@ func (vb *Vorbis) parseIdentHeader() bool {
 	tmp = vb.pr.ReadBits(4)
 	vb.blockSize[1] = 0x00000001 << tmp
 	//frame_type[1] = tmp - 5;
-	//assert(frame_width[frame_type[0]] == blockSize[0]);
-	//assert(frame_width[frame_type[1]] == blockSize[1]);
+	//debug.Assert(frame_width[frame_type[0]] == blockSize[0]);
+	//debug.Assert(frame_width[frame_type[1]] == blockSize[1]);
 	if vb.blockSize[0] > vb.blockSize[1] || vb.blockSize[0] < 64 || vb.blockSize[1] > 8192 {
 		fmt.Println(fmt.Sprintf("unsupported blocksize pair %d,%d", vb.blockSize[0], vb.blockSize[1]))
 		return false
@@ -89,10 +89,10 @@ func (vb *Vorbis) parseCommentsHeader() bool {
 		}
 
 	}
-	if debug {
-		fmt.Println("vendor:", vb.vendor)
+	if debug.ON {
+		debug.Println("vendor:", vb.vendor)
 		for k, v := range vb.comments {
-			fmt.Println(k, "=", v)
+			debug.Println(k, "=", v)
 		}
 	}
 	return true
@@ -133,7 +133,7 @@ func (vb *Vorbis) parseSetupHeader() bool {
 	}
 
 	// floors
-	assert(vb.floors == nil)
+	debug.Assert(vb.floors == nil)
 	vb.numFloors = vb.pr.ReadBits(6) + 1
 	if vb.numFloors != 0 {
 		vb.floors = make([]sFloor, vb.numFloors)
@@ -144,7 +144,7 @@ func (vb *Vorbis) parseSetupHeader() bool {
 
 	// residues
 	vb.numResidues = vb.pr.ReadBits(6) + 1
-	assert(vb.residues == nil)
+	debug.Assert(vb.residues == nil)
 	vb.residues = make([]sResidue, vb.numResidues)
 	for i := uint32(0); i < vb.numResidues; i++ {
 		vb.residues[i].readConfig(vb)
@@ -152,7 +152,7 @@ func (vb *Vorbis) parseSetupHeader() bool {
 
 	// mapping
 	vb.numMappings = vb.pr.ReadBits(6) + 1
-	assert(vb.mappings == nil)
+	debug.Assert(vb.mappings == nil)
 	vb.mappings = make([]sMapping, vb.numMappings)
 	for i := uint32(0); i < vb.numMappings; i++ {
 		vb.mappings[i].readConfig(vb)
@@ -160,7 +160,7 @@ func (vb *Vorbis) parseSetupHeader() bool {
 
 	// modes
 	vb.numModes = vb.pr.ReadBits(6) + 1
-	assert(vb.modes == nil)
+	debug.Assert(vb.modes == nil)
 	vb.modes = make([]sMode, vb.numModes)
 	for i := uint32(0); i < vb.numModes; i++ {
 		vb.modes[i].readConfig(vb)
@@ -189,8 +189,6 @@ func (vb *Vorbis) parseVorbisHeaders() bool {
 		return false
 	}
 	vb.headerReady = true
-	if debug {
-		fmt.Println("vorbis: header decode complete.")
-	}
+	debug.Println("vorbis: header decode complete.")
 	return true
 }

@@ -1,6 +1,10 @@
 package vorbis
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/toy80/utils/debug"
+)
 
 const maxPartitions = 256
 
@@ -17,9 +21,7 @@ type sResidue struct {
 
 func (rs *sResidue) readConfig(vb *Vorbis) bool {
 	rs.typ = vb.pr.ReadBits(16)
-	if debug {
-		fmt.Println("  read residue config, rs.typ=" + fmt.Sprint(rs.typ))
-	}
+	debug.Println("  read residue config, rs.typ=" + fmt.Sprint(rs.typ))
 	if rs.typ > 3 {
 		fmt.Println("unsupported residues type")
 		return false
@@ -67,7 +69,7 @@ func (rs *sResidue) decodePartiFormat0(vb *Vorbis, _vqbook *sCodeBook, v []float
 	   13      }
 	   15    6) done
 	*/
-	assert(_vqbook.codeDims <= 64)
+	debug.Assert(_vqbook.codeDims <= 64)
 	var entTemp [64]float32
 	step := n / _vqbook.codeDims
 	for i := uint32(0); i < step; i++ {
@@ -99,10 +101,10 @@ func (rs *sResidue) decodePartiFormat1(vb *Vorbis, _vqbook *sCodeBook, v []float
 		13    7) done
 	*/
 
-	assert(_vqbook.codeDims <= 64)
+	debug.Assert(_vqbook.codeDims <= 64)
 	var entTemp [64]float32
 	var i uint32
-	assert(i < n)
+	debug.Assert(i < n)
 	for i < n {
 		if !_vqbook.decodeVector(vb, entTemp[:_vqbook.codeDims]) {
 			return false
@@ -117,7 +119,7 @@ func (rs *sResidue) decodePartiFormat1(vb *Vorbis, _vqbook *sCodeBook, v []float
 }
 
 func (rs *sResidue) decodeFormat01(vb *Vorbis, bufChOrder []*sChannelBuf, chCount uint32, _sz uint32) bool {
-	assert(rs.typ != 2)
+	debug.Assert(rs.typ != 2)
 
 	for i := uint32(0); i < chCount; i++ {
 		v := bufChOrder[i].residue[:_sz]
@@ -213,7 +215,7 @@ func (rs *sResidue) decodeFormat01(vb *Vorbis, bufChOrder []*sChannelBuf, chCoun
 
 // format 2 is like format 1, but interlacing multi-channel into single vector
 func (rs *sResidue) decodeFormat2(vb *Vorbis, bufChOrder []*sChannelBuf, chCount uint32, _sz uint32) bool {
-	assert(rs.typ == 2)
+	debug.Assert(rs.typ == 2)
 	needDecode := false
 	for ch := uint32(0); ch < chCount; ch++ {
 		if !bufChOrder[ch].floorUnused {

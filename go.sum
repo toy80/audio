@@ -1,4 +1,5 @@
+github.com/toy80/utils v0.0.0-20190808043835-24a3de3ccbda h1:gyWAy71uKFP5Rtykp6PpMqyoqlVJ00bfyd+esrM2QIM=
+github.com/toy80/utils v0.0.0-20190808043835-24a3de3ccbda/go.mod h1:hMTrC01X+uPayDjPvp1QFTgsd1YuJGvQbjvViqrVaZs=
 golang.org/x/image v0.0.0-20190802002840-cff245a6509b h1:+qEpEAPhDZ1o0x3tHzZTQDArnOixOzGD9HUJfcg0mb4=
 golang.org/x/image v0.0.0-20190802002840-cff245a6509b/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
-golang.org/x/net v0.0.0-20190724013045-ca1201d0de80 h1:Ao/3l156eZf2AW5wK8a7/smtodRU+gha3+BeqJ69lRk=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=

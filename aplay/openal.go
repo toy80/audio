@@ -1,4 +1,4 @@
-//+build !noaudio
+// +build !noaudio
 
 package aplay
 
@@ -25,6 +25,7 @@ import (
 	"unsafe"
 
 	"github.com/toy80/audio/wav"
+	"github.com/toy80/utils/debug"
 )
 
 const (
@@ -325,9 +326,7 @@ func (s *source) SetOverlayGain(x float32) {
 func (s *source) setGain(x float32) {
 	s.gain = x
 	y := C.ALfloat(s.gain * s.ovgain)
-	if debug {
-		fmt.Println("alSourcefv AL_GAIN:", s.gain)
-	}
+	debug.Println("alSourcefv AL_GAIN:", s.gain)
 	C.alSourcefv(s.id, C.AL_GAIN, &y)
 }
 
@@ -486,9 +485,7 @@ func (s *source) trySubmit2() error {
 		if s.pending.sound == nil {
 			return err
 		}
-		if debug {
-			fmt.Println("current:", s.pending.sound)
-		}
+		debug.Println("current:", s.pending.sound)
 		s.setGain(s.pending.gain)
 		s.sound = s.pending.sound
 		s.loop = s.pending.loop
@@ -542,17 +539,13 @@ func (s *source) step() {
 
 // start to play
 func (s *source) activate() {
-	if debug {
-		fmt.Println("activate")
-	}
+	debug.Println("activate")
 	s.active = true
 }
 
 // compleleted or terminated current+pending
 func (s *source) deactivate() {
-	if debug {
-		fmt.Println("deactivate")
-	}
+	debug.Println("deactivate")
 	s.active = false
 }
 
@@ -614,9 +607,7 @@ func Alloc() (p Player) {
 }
 
 func handleCmd(cmd *cmd) {
-	if debug {
-		fmt.Printf("%s\n", cmd)
-	}
+	debug.Printf("%s\n", cmd)
 	switch cmd.typ {
 	case cmdAlloc:
 		active[cmd.src] = true
@@ -640,9 +631,7 @@ func handleCmd(cmd *cmd) {
 	case cmdRelease:
 		// TODO: what to do?
 	default:
-		if debug {
-			fmt.Printf("unkown command: %s\n", cmd)
-		}
+		debug.Printf("unkown command: %s\n", cmd)
 	}
 }
 

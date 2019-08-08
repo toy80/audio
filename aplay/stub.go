@@ -1,11 +1,10 @@
-//+build noaudio
+// +build noaudio
 
 package aplay
 
 import (
-	"fmt"
-
 	"github.com/toy80/audio/wav"
+	"github.com/toy80/utils/debug"
 )
 
 var theMutedPlayer mutedPlayer
@@ -68,9 +67,7 @@ func (mutedPlayer) IsRelative() bool { return false }
 func (mutedPlayer) SetRelative(b bool) {}
 
 func (mutedPlayer) Play(x wav.Reader, gain float32, loop int) error {
-	if debug {
-		fmt.Println("play audio on a muted player will not output any sounds")
-	}
+	debug.Println("play audio on a muted player will not output any sounds")
 	return nil
 }
 

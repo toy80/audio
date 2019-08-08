@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/toy80/utils/debug"
 )
 
 var (
@@ -178,7 +180,7 @@ func (o *Reader) switchNextPacket() (err error) {
 
 	//o.eop = false
 	o.idxPacket++
-	if debug {
+	if debug.ON {
 		exact := ">="
 		n := 0
 		for i := o.idxSeg; i < int(o.numSegs); i++ {
@@ -188,7 +190,7 @@ func (o *Reader) switchNextPacket() (err error) {
 				break
 			}
 		}
-		fmt.Printf("  ogg: packet %d: %s %d bytes\n", o.idxPacket, exact, n)
+		debug.Printf("  ogg: packet %d: %s %d bytes\n", o.idxPacket, exact, n)
 	}
 	return nil
 }
@@ -293,7 +295,7 @@ func (o *Reader) initNextPage() error {
 	o.idxSeg = 0
 	o.lenSeg = int(o.tabSegs[0])
 
-	if debug {
+	if debug.ON {
 		sflags := ""
 		if o.pageFlagBos() {
 			sflags += " (first)"
@@ -305,7 +307,7 @@ func (o *Reader) initNextPage() error {
 			sflags += " (last)"
 		}
 
-		fmt.Printf("ogg: page %d: stream=%d sn=%d, granule=%d, segs=%d %s\n",
+		debug.Printf("ogg: page %d: stream=%d sn=%d, granule=%d, segs=%d %s\n",
 			o.idxPage, o.stream, o.pagesn, o.granule, o.numSegs, sflags)
 	}
 
@@ -370,7 +372,7 @@ func (o *Reader) _readPacket(_buf []byte) (n int, err error) {
 
 // read but not drop
 func (o *Reader) peekPacketBits(_n uint32) uint32 {
-	// assert(_n > 0 && _n <= 32)
+	// debug.Assert(_n > 0 && _n <= 32)
 
 	if o.endOfPacket {
 		// Attempting to read past the end of an encoded packet results in an ’end-of-packet’ condition.
@@ -381,9 +383,9 @@ func (o *Reader) peekPacketBits(_n uint32) uint32 {
 
 	if o.numbits < _n {
 		// read bytes into bits buffer
-		//assert(!o.endOfPacket)
+		//debug.Assert(!o.endOfPacket)
 		room := 8 - ((o.numbits + 0x07) >> 3)
-		//assert(room > 0)
+		//debug.Assert(room > 0)
 		var buf [8]byte
 		n, _ := o._readPacket(buf[:room])
 		if n != 0 {
@@ -399,9 +401,7 @@ func (o *Reader) peekPacketBits(_n uint32) uint32 {
 func (o *Reader) dropPacketBits(bits uint32) {
 	if bits > o.numbits {
 		if !o.endOfPacket {
-			if debug {
-				fmt.Println("end of packet")
-			}
+			debug.Println("end of packet")
 			o.endOfPacket = true
 		}
 		o.bitsbuf = 0
@@ -416,7 +416,7 @@ func (o *Reader) readPacketBits(bits uint32) uint32 {
 	if bits > 32 {
 		panic("read bits > 32 is not supported")
 	}
-	// assert(bits <= 32)
+	// debug.Assert(bits <= 32)
 	ret := o.peekPacketBits(bits)
 	o.dropPacketBits(bits)
 	return ret
@@ -425,9 +425,9 @@ func (o *Reader) readPacketBits(bits uint32) uint32 {
 // read bytes from bits buffer, may not byte aligned.
 // this function is use for parse string, so no need to optimize.
 func (o *Reader) readPacketBytes(_buf []byte) {
-	// assert(len(_buf) != 0)
+	// debug.Assert(len(_buf) != 0)
 	num := uint32(len(_buf))
-	// assert(num > 0)
+	// debug.Assert(num > 0)
 	numDwords := num / 4
 	remains := num & 0x00000003
 	for numDwords > 0 {

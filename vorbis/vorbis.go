@@ -12,19 +12,12 @@ import (
 
 	"github.com/toy80/audio/ogg"
 	"github.com/toy80/audio/wav"
+	"github.com/toy80/utils/debug"
 )
 
 const (
 	maxChannels = 20
 )
-
-// as this vorbis decoder is converted from the same one written in C++
-// the assert macro is keep for debugging purpose
-func assert(b bool) {
-	if debug && !b {
-		panic("assert")
-	}
-}
 
 type PacketReader interface {
 	NextPacket() (err error)
@@ -86,7 +79,7 @@ func (vb *Vorbis) initOverlap() {
 	for i := 0; i < 2; i++ {
 		w := vb.blockSize[i]
 		hw := w >> 1
-		assert(len(vb.slope[i]) == 0)
+		debug.Assert(len(vb.slope[i]) == 0)
 		s := make([]float32, hw)
 		vb.slope[i] = s
 		for n := uint32(0); n < hw; n++ {
