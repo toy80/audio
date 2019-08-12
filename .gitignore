@@ -25,6 +25,7 @@
 *.gz
 *.zip
 debug
+*debug_bin
 
 # Project specials
 *.svg
