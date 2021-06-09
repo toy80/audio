@@ -30,7 +30,7 @@ type Player interface {
 	SetRelative(b bool)
 
 	// Play the sound, if sound implement io.ReadAt interface (i.e. MemSound), it can be played
-	// in difference plays at same time. otherwise (i.e. SoundFile) the io.Read interface will be used.
+	// in difference players at same time. otherwise (i.e. SoundFile) the io.Read interface will be used.
 	// if the player is playing another sound, the new sound will put in pending state.
 	Play(x wav.Reader, gain float32, loop int) error
 

@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/toy80/utils/debug"
+	"github.com/toy80/debug"
 )
 
 var (

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/toy80/utils/debug"
+	"github.com/toy80/debug"
 )
 
 func isVorbis(v []byte) bool {

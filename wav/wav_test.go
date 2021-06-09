@@ -2,7 +2,7 @@ package wav
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"math/rand"
 	"testing"
 )
@@ -28,7 +28,7 @@ func TestReadWrite(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	data2, err := ioutil.ReadAll(x)
+	data2, err := io.ReadAll(x)
 	if err != nil {
 		t.Fatal(err)
 	}

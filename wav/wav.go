@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"time"
 
@@ -135,7 +134,7 @@ func (f *wavReader) reset(rewind bool) error {
 		}
 		if chunkID == wavChunkFmt {
 			var b []byte
-			if b, err = ioutil.ReadAll(chunkData); err != nil {
+			if b, err = io.ReadAll(chunkData); err != nil {
 				return err
 			}
 
@@ -219,7 +218,7 @@ func Write(w io.Writer, wave Reader) (err error) {
 	blockAlign = channels * bitsPerSample / 8
 	bytesPerSecond = uint32(blockAlign) * frameRate
 
-	buf, err := ioutil.ReadAll(wave)
+	buf, err := io.ReadAll(wave)
 	if err != nil {
 		return err
 	}

@@ -5,9 +5,9 @@ import (
 	"math"
 )
 
-const pi float32 = math.Pi
+const pi = math.Pi
 
-// MDCT calculator
+// MDCT calculator.
 type MDCT struct {
 	N   int // 1/1
 	N2  int // 1/2
@@ -21,13 +21,13 @@ type MDCT struct {
 	buf []float32
 }
 
-func cos(x float32) float32 {
-	return float32(math.Cos(float64(x)))
-}
+// func cos(x float32) float32 {
+// 	return float32(math.Cos(float64(x)))
+// }
 
-func sin(x float32) float32 {
-	return float32(math.Sin(float64(x)))
-}
+// func sin(x float32) float32 {
+// 	return float32(math.Sin(float64(x)))
+// }
 
 func ilog(x uint32) (y int) {
 	for x != 0 {
@@ -65,34 +65,39 @@ func reverseBits(s, bits uint32) (ret uint32) {
 	return ret
 }
 
-func (m *MDCT) init(_n int) {
-	if (_n&-_n) != _n || _n < 16 {
-		panic(fmt.Sprintf("mdct: unsupported length %d", _n))
+// n要求是2的整数次幂. 最高支持到2^31, 此时要占用28G内存
+func (m *MDCT) init(n int) {
+	if (n & -n) != n {
+		panic(fmt.Sprintf("mdct: unsupported length %d", n))
 	}
 
-	m.N = _n
-	m.N2 = _n / 2
-	m.N4 = _n / 4
-	m.N8 = _n / 8
+	m.N = n
+	m.buf = make([]float32, m.N)
+
+	if n < 16 {
+		return // 小于16特殊处理, 不优化
+	}
+	m.N2 = n / 2
+	m.N4 = n / 4
+	m.N8 = n / 8
 	m.N43 = 3 * m.N4
-	m.LDN = ilog(uint32(_n)) - 1
+	m.LDN = ilog(uint32(n)) - 1
 
 	m.A = make([]float32, m.N2)
 	m.B = make([]float32, m.N2)
 	for k := 0; k < m.N4; k++ {
-		m.A[2*k] = cos(4 * float32(k) * pi / float32(m.N))
-		m.A[2*k+1] = -sin(4 * float32(k) * pi / float32(m.N))
-		m.B[2*k] = cos((2*float32(k) + 1) * pi / float32(m.N) / 2)
-		m.B[2*k+1] = sin((2*float32(k) + 1) * pi / float32(m.N) / 2)
+		sa, ca := math.Sincos(4 * float64(k) * pi / float64(m.N))
+		sb, cb := math.Sincos((2*float64(k) + 1) * pi / float64(m.N) / 2)
+		m.A[2*k], m.A[2*k+1] = float32(ca), -float32(sa)
+		m.B[2*k], m.B[2*k+1] = float32(cb), float32(sb)
 	}
 
 	m.C = make([]float32, m.N4)
 	for k := 0; k < m.N8; k++ {
-		m.C[2*k] = cos(2 * (2*float32(k) + 1) * pi / float32(m.N))
-		m.C[2*k+1] = -sin(2 * (2*float32(k) + 1) * pi / float32(m.N))
+		sc, cc := math.Sincos(2 * (2*float64(k) + 1) * pi / float64(m.N))
+		m.C[2*k], m.C[2*k+1] = float32(cc), -float32(sc)
 	}
 
-	m.buf = make([]float32, m.N)
 }
 
 func (m *MDCT) inv1(u, v []float32) {
@@ -114,7 +119,8 @@ func (m *MDCT) inv2(v, w []float32) {
 
 func (m *MDCT) inv4(u, v []float32) {
 	for i := uint32(0); i < (uint32)(m.N8); i++ {
-		j := reverseBits(i, uint32(m.LDN-3)) // TODO: can be pre-calculated
+		// 这里不是瓶颈, 改为查表后实测没有提升
+		j := reverseBits(i, uint32(m.LDN-3))
 		if i == j {
 			i8 := i << 3
 			v[i8+1] = u[i8+1]
@@ -162,10 +168,26 @@ func (m *MDCT) inv3(w, u []float32) {
 	}
 }
 
+func inverseSlow(in []float32, out []float32, n int) {
+	n2 := n / 2
+	for i := 0; i < n; i++ {
+		var sum float64 // must be float64 or unacceeptable error
+		for k := 0; k < n2; k++ {
+			sum += float64(in[k]) * math.Cos((float64(i)+0.5+float64(n2)*0.5)*(float64(k)+0.5)*math.Pi/float64(n2))
+		}
+		out[i] = float32(sum)
+	}
+}
+
 // inverse MDCT algorithm from the paper
 // "The use of multirate filter banks for coding of high quality digital audio" 1992
 // TODO: inverse MDCT is bottle neck, need optimizatiion
 func (m *MDCT) inverse(x []float32) {
+	if m.N < 16 {
+		copy(m.buf, x)
+		inverseSlow(m.buf, x, m.N)
+		return
+	}
 	Y := x
 	y := x
 

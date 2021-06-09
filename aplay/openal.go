@@ -1,4 +1,4 @@
-// +build !noaudio
+// +build !nosound
 
 package aplay
 
@@ -25,7 +25,7 @@ import (
 	"unsafe"
 
 	"github.com/toy80/audio/wav"
-	"github.com/toy80/utils/debug"
+	"github.com/toy80/debug"
 )
 
 const (

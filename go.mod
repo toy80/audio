@@ -1,8 +1,8 @@
 module github.com/toy80/audio
 
-go 1.12
+go 1.16
 
 require (
-	github.com/toy80/utils v0.0.0-20190808043835-24a3de3ccbda
-	golang.org/x/image v0.0.0-20190802002840-cff245a6509b
+	github.com/toy80/debug v0.0.0-20210609023335-aa92e13b78a8
+	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8
 )

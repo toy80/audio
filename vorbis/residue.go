@@ -3,7 +3,7 @@ package vorbis
 import (
 	"fmt"
 
-	"github.com/toy80/utils/debug"
+	"github.com/toy80/debug"
 )
 
 const maxPartitions = 256

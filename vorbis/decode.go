@@ -6,7 +6,7 @@ import (
 	"math"
 
 	"github.com/toy80/audio/wav"
-	"github.com/toy80/utils/debug"
+	"github.com/toy80/debug"
 )
 
 type sChannelBuf struct {

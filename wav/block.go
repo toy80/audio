@@ -3,7 +3,6 @@ package wav
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"time"
 )
 
@@ -71,7 +70,7 @@ func (s *Block) Duration() time.Duration {
 
 // ReadAll read all data into memory Block from reader x
 func ReadAll(x Reader) (*Block, error) {
-	b, err := ioutil.ReadAll(x)
+	b, err := io.ReadAll(x)
 	if err != nil {
 		return nil, err
 	}

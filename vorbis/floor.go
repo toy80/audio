@@ -5,7 +5,7 @@ import (
 	"sort"
 	"unsafe"
 
-	"github.com/toy80/utils/debug"
+	"github.com/toy80/debug"
 )
 
 var floor1InverseDB = [256]float32{

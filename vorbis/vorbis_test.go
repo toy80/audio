@@ -11,7 +11,6 @@ import (
 )
 
 func TestOgg(t *testing.T) {
-
 	f := bytes.NewReader(oggfile1)
 	ogg := new(ogg.Reader)
 	var err error
@@ -39,7 +38,6 @@ func TestOgg(t *testing.T) {
 func BenchmarkVorbis(b *testing.B) {
 	var buf [1024]byte
 	var sz int64
-	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		r := bytes.NewReader(oggfile1)
 		vb, err := New(r, wav.I16)
@@ -58,6 +56,6 @@ func BenchmarkVorbis(b *testing.B) {
 		}
 	}
 
-	b.SetBytes(sz)
+	b.SetBytes(sz / int64(b.N))
 	b.ReportAllocs()
 }

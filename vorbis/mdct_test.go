@@ -22,19 +22,9 @@ func TestReverseBits(t *testing.T) {
 	}
 }
 
-func inverseSlow(in []float32, out []float32, n int) {
-	n2 := n / 2
-	for i := 0; i < n; i++ {
-		var sum float64 // must be float64 or unacceeptable error
-		for k := 0; k < n2; k++ {
-			sum += float64(in[k]) * math.Cos((float64(i)+0.5+float64(n2)*0.5)*(float64(k)+0.5)*math.Pi/float64(n2))
-		}
-		out[i] = float32(sum)
-	}
-}
-
 func TestInverse(t *testing.T) {
-	for _, n := range []int{16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192} {
+	// 我们只测到8192, 再高用不到, 而且计算太慢, 累积误差也大
+	for n := 1; n <= 8192; n = n << 1 {
 		s, d1, d2 := make([]float32, n), make([]float32, n), make([]float32, n)
 		for i := 0; i < n; i++ {
 			s[i] = rand.Float32()
@@ -45,7 +35,7 @@ func TestInverse(t *testing.T) {
 		m.inverse(d2)
 		inverseSlow(s, d1, n)
 		for i, v := range d1 {
-			if math.Abs(float64(v-d2[i]))/math.Abs(float64(v)) > 0.01 {
+			if math.Abs(float64(v-d2[i])) > 0.0001 {
 				t.Logf("d1[%d] = %g\n", i, v)
 				t.Logf("d2[%d] = %g\n", i, d2[i])
 				t.Fatal("incorrect result, d1 != d2")
@@ -54,26 +44,34 @@ func TestInverse(t *testing.T) {
 	}
 }
 
-/*
-
-func BenchmarkIMDCT2048(b *testing.B) {
-	const n = 2048
-	const k = 100
+func benchmarkIMDCT(b *testing.B, n int) {
 	b.StopTimer()
 	s, d := make([]float32, n), make([]float32, n)
 	for i := 0; i < n; i++ {
 		s[i] = rand.Float32()
 	}
 	var m MDCT
-	m.Init(n)
+	m.init(n)
 	b.StartTimer()
-	b.RunParallel(func(pb *testing.PB) {
-		for pb.Next() {
-			for i := 0; i < k; i++ {
-				m.Inverse(s, d)
-			}
-		}
-	})
-	b.SetBytes(n * 4 * k)
+	for i := 0; i < b.N; i++ {
+		copy(d[:], s[:]) // 每次都用原始数据计算, 不迭代
+		m.inverse(d)
+	}
+	b.SetBytes(int64(n * 4))
 }
-*/
+
+func BenchmarkIMDCT32(b *testing.B) {
+	benchmarkIMDCT(b, 32)
+}
+
+func BenchmarkIMDCT512(b *testing.B) {
+	benchmarkIMDCT(b, 512)
+}
+
+func BenchmarkIMDCT2048(b *testing.B) {
+	benchmarkIMDCT(b, 2048)
+}
+
+func BenchmarkIMDCT8192(b *testing.B) {
+	benchmarkIMDCT(b, 8192)
+}
